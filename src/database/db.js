@@ -1,19 +1,16 @@
 import mysql from 'mysql2'
 import dotenv from 'dotenv'
-/**
- * Configuración para cargar variables de entorno desde el archivo .env
- */
+import {MYSQL_DATABASE, MYSQL_HOST, MYSQL_PASSWORD, MYSQL_PORT, MYSQL_USER} from './config.js'
 dotenv.config();
 
-/**
- * Pool de conexiones a la base de datos MySQL
- */
 export const pool = mysql.createPool({
-  host: process.env.MYSQL_HOST,
-  user: process.env.MYSQL_USER,
-  password: process.env.MYSQL_PASSWORD,
-  database: process.env.MYSQL_DATABASE,
+    host: MYSQL_HOST, 
+    user: MYSQL_USER,
+    password: MYSQL_PASSWORD,
+    database: MYSQL_DATABASE,
+    port: MYSQL_PORT
 }).promise();
+
 
 export const getAll = async (tabla)=>{
     try{
@@ -44,4 +41,38 @@ export async function createActividad(titulo, descripcion, id, idCategoria, idDa
     }catch(e){
         console.log(e.message);
     }
+}
+
+export async function getActividad(id) {
+    const [row] = await pool.query('SELECT * FROM actividades WHERE id = ?', [id])
+    return (row[0]);
+}
+
+export async function getSubCategoria(id) {
+    const [row] = await pool.query('SELECT * FROM subcategoria WHERE idsubcategoria = ?', [id])
+    return (row[0]);
+}
+
+export async function getDatos(id) {
+    const [row] = await pool.query('SELECT * FROM datos WHERE iddatos = ?', [id])
+    return (row[0]);
+}
+export async function getTelefono(id) {
+    const [row] = await pool.query('SELECT * FROM telefono WHERE idtelefono = ?', [id])
+    return (row[0]);
+}
+
+export async function getLink(id) {
+    const [row] = await pool.query('SELECT * FROM links WHERE idlinks = ?', [id])
+    return (row[0]);
+}
+
+export async function getDireccion(id) {
+    const [row] = await pool.query('SELECT * FROM direccion WHERE iddireccion = ?', [id])
+    return (row[0]);
+}
+
+export async function getHorarios(id) {
+    const [row] = await pool.query('SELECT * FROM horarios WHERE idhorarios = ?', [id])
+    return (row[0]);
 }
