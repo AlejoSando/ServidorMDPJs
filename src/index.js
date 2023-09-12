@@ -1,49 +1,19 @@
-import express from 'express';
+import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
-import { getActividad, getAll, getDatos, getDireccion, getHorarios, getLink, getSubCategoria, getTelefono } from './database/db.js';
+import apicache from 'apicache'
+import v1ActivitiesRoutes from './v1/router/activitiesRoutes.js'
 
 dotenv.config()
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT|| 8080;
+const cache = apicache.middleware
 
 app.use(express.json())
+app.use(cache("2 minutes"))
 app.use(cors())
-
-
-app.get("/actividades", async (req, res) => {
-    try {
-        const data = await getAll("actividades")
-        res.json(data)
-    } catch (error) {
-        res.status(500).json({ error: "An error occurred" }); 
-    }
-});
-app.get("/categoria", async (req, res) => {
-    try {
-        const data = await getAll("categoria")
-        res.json(data)
-    } catch (error) {
-        res.status(500).json({ error: "An error occurred" }); 
-    }
-});
-app.get("/actividad/:id", async (req, res) => {
-    try {
-        const data = await getActividad(req.params.id)
-        const data1 = await getSubCategoria(data.idSubCategoria)
-        const data2 = await getDatos(data.idDatos)
-        const data3 = await getTelefono(data2.idTelefono)
-        const data4 = await getLink(data2.idLink)
-        const data5 = await getDireccion(data2.idDireccion)
-        const data6 = await getHorarios(data2.idHorarios)
-        const result = {...data, ...data1,...data2,...data3,...data4,...data5,...data6}
-        res.status(200).json(result)
-    } catch (error) {
-        res.status(500).json({ error: "An error occurred" }); 
-    }
-});
+app.use("/api/v1/activities", v1ActivitiesRoutes)
 
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
-});
-
+})
