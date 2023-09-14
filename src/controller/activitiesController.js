@@ -1,8 +1,11 @@
 import * as activitiesService from '../services/activitiesServices.js'
+import { getAllDataById } from '../database/activities.js'
+import { getAllActivitiesWithDetails } from '../database/activities.js'
 
 export const getAllActivities = async (req,res) => {
     try {
-        const allActivities = await activitiesService.getAllActivities()
+        //const allActivities = await activitiesService.getAllActivities()
+        const allActivities = await getAllActivitiesWithDetails()
         res.send({status: "OK", data: {allActivities}})
     } catch (error) {
         res
@@ -13,7 +16,8 @@ export const getAllActivities = async (req,res) => {
 
 export const getActivity = async (req,res) => {
     try {
-        const activity = await activitiesService.getOneActivityById(req.params.idActivity)
+        //const activity = await activitiesService.getOneActivity(req.params.idActivity)
+        const activity = await getAllDataById(req.params.idActivity)
         res.send({status: "OK", data: {activity}})
     } catch (error) {
         res
