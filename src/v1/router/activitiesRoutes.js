@@ -3,10 +3,10 @@ import * as actividad from '../../controller/activitiesController.js'
 export const router = express.Router()
 
 router
-    .get("/actividad/:Idactivity", actividad.getAllActivities)
+    .get("/actividad/:idActivity", actividad.getActivity)
     .get("/actividades", actividad.getAllActivities)
-    .post("/create/actividades")
-    .patch("/update/:Idactivity")
-    .delete("/delete/:Idactivity")
+    .post("/create/actividades", actividad.createNewActivity)
+    .patch("/update/:Idactivity", actividad.updateActivity)
+    .delete("/delete/:Idactivity", actividad.deleteActivity)
 
 export default router

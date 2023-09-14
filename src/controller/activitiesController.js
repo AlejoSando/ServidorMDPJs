@@ -1,8 +1,8 @@
 import * as activitiesService from '../services/activitiesServices.js'
 
-export const getAllActivities = (req,res) => {
+export const getAllActivities = async (req,res) => {
     try {
-        const allActivities = activitiesService.getAllActivities()
+        const allActivities = await activitiesService.getAllActivities()
         res.send({status: "OK", data: {allActivities}})
     } catch (error) {
         res
@@ -11,9 +11,9 @@ export const getAllActivities = (req,res) => {
     }
 }  
 
-const getActivity = (req,res) => {
+export const getActivity = async (req,res) => {
     try {
-        const activity = activitiesService.getOneActivityById(req.body.id)
+        const activity = await activitiesService.getOneActivityById(req.params.idActivity)
         res.send({status: "OK", data: {activity}})
     } catch (error) {
         res
@@ -22,7 +22,7 @@ const getActivity = (req,res) => {
     }
 }
 
-const createNewActivity = (req,res) => {
+export const createNewActivity = async (req,res) => {
     const { body } = req
     if(!body.id || !body){
         res
@@ -38,7 +38,7 @@ const createNewActivity = (req,res) => {
     }
 }
 
-const updateActivity = (req,res) => {
+export const updateActivity = async (req,res) => {
     const { body } = req
     if(!body.id || !body){
         res
@@ -56,7 +56,7 @@ const updateActivity = (req,res) => {
     }
 }
 
-const deleteActivity = (req,res) => {
+export const deleteActivity = async (req,res) => {
     const { body } = req
     if (!body.id){
         res
@@ -74,11 +74,3 @@ const deleteActivity = (req,res) => {
             .send({status: "FAILED", data:{error: error?.message || error}})
     }
 }
-
-const prueba = (req,res) => {
-    const prueba = req.params
-    res
-        .status(200)
-        .send({status: "OK", data: prueba})
-}
-
