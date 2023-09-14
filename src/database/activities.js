@@ -5,8 +5,8 @@ export const getAllActivities = async () =>{
         const [rows, fields] = await pool.query(`SELECT * FROM actividades`);
         return rows;
     }catch(e){
-        console.log(e.message);
-        throw e;
+        console.log(e.message || e);
+        throw e.message || e;
     }
 }
 
@@ -15,7 +15,8 @@ export async function getOneActivity(id){
         const [result] = await pool.query(`SELECT * FROM actividades WHERE id = ?`,[id]);
         return result;
     }catch(e){
-        console.log(e.message);
+        console.log(e.message || e);
+        throw e.message || e;
     }
 }
 
@@ -27,7 +28,8 @@ export async function createActividad(titulo, descripcion, id, idCategoria, idDa
     `, [ titulo, descripcion, id, idCategoria, idDatos]);
     return (row);
     }catch(e){
-        console.log(e.message);
+        console.log(e.message || e);
+        throw e.message || e;
     }
 }
 
